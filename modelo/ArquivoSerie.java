@@ -8,7 +8,7 @@ public class ArquivoSerie {
     private RandomAccessFile arquivo;
 
     public ArquivoSerie() throws IOException {
-        arquivo = new RandomAccessFile("serie.db", "rw");
+        arquivo = new RandomAccessFile("./dados/serie.db", "rw");
 
         if (arquivo.length() == 0) {
             arquivo.writeInt(0);;
