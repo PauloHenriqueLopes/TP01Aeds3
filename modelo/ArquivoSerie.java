@@ -11,8 +11,8 @@ public class ArquivoSerie {
     private ArvoreBMais<ParNomeId> indiceNome;
 
     public ArquivoSerie() throws Exception {
-        arquivo = new RandomAccessFile("./dados/serie.db", "rw");
-        indiceNome = new ArvoreBMais<>(ParNomeId.class.getConstructor(), 5, "./dados/indiceNomeSerie.db");
+        arquivo = new RandomAccessFile("TP01Aeds3/dados/serie.db", "rw");
+        indiceNome = new ArvoreBMais<>(ParNomeId.class.getConstructor(), 5, "/home/paulo/Documents/programacao/TP01Aeds3/dados/indiceNomeSerie.db");
 
         if (arquivo.length() == 0) {
             arquivo.writeInt(0); // Cabeçalho: Próximo ID disponível
@@ -26,7 +26,6 @@ public class ArquivoSerie {
         byte[] data = serie.toByteArray();
 
         arquivo.seek(arquivo.length()); // Adiciona no final do arquivo
-        long pos = arquivo.getFilePointer();
         arquivo.writeByte(0); // Lápide (0 = válido, 1 = excluído)
         arquivo.writeShort(data.length);
         arquivo.write(data);
@@ -44,7 +43,6 @@ public class ArquivoSerie {
         arquivo.seek(4);
 
         while (arquivo.getFilePointer() < arquivo.length()) {
-            long pos = arquivo.getFilePointer();
             byte lapide = arquivo.readByte();
             short tamanho = arquivo.readShort();
             byte[] data = new byte[tamanho];
@@ -142,5 +140,28 @@ public class ArquivoSerie {
             }
         }
         return false;
+    }
+
+    public boolean delete(String nome) throws Exception {
+        // Busca os pares (nome, ID) na Árvore B+
+        ArrayList<ParNomeId> pnis = indiceNome.read(new ParNomeId(nome, -1));
+    
+        // Se nenhuma série for encontrada, retorna falso
+        if (pnis.isEmpty()) return false;
+    
+        boolean sucesso = true;
+    
+        // Percorre a lista de séries encontradas com o nome fornecido
+        for (ParNomeId pni : pnis) {
+            // Chama a função delete(id) para remover do arquivo
+            if (delete(pni.getId())) {
+                // Remove da Árvore B+
+                indiceNome.delete(pni);
+            } else {
+                sucesso = false;
+            }
+        }
+        
+        return sucesso;
     }
 }
