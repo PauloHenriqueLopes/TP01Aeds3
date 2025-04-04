@@ -8,7 +8,7 @@ public class Principal {
             scanner = new Scanner(System.in);
             int opition;
             do{
-                System.out.println("PUCFlix 1.0");
+                System.out.println("\n\nPUCFlix 1.0");
                 System.out.println( "-----------");
                 System.out.println("> Início\n");
                 System.out.println( "1) Séries");

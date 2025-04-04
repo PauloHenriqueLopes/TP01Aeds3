@@ -18,14 +18,14 @@ public class MenuSeries {
      public void menu() {
           int opition;
           do {
-               System.out.println("PUCFlix 1.0");
+               System.out.println("\n\nPUCFlix 1.0");
                 System.out.println( "-----------");
                 System.out.println("> Início > Séries\n");
-                System.out.println( "1) Adicionar");
-                System.out.println( "2) Buscar");
-                System.out.println( "3) Alterar");
-                System.out.println( "4) Excluir");
-                System.out.println( "0) Retornar");
+                System.out.println("1) Adicionar");
+                System.out.println("2) Buscar");
+                System.out.println("3) Alterar");
+                System.out.println("4) Excluir");
+                System.out.println("0) Retornar");
 
                 System.out.print("\nOpção: ");
                try {
@@ -107,9 +107,9 @@ public class MenuSeries {
                try{
                     Serie s = new Serie(nome, lancamento, sinopse, streaming);
                     arqSerie.create(s);
-                    System.out.println("Livro incluido com sucesso");
+                    System.out.println("Livro incluido com sucesso!\n");
                } catch(Exception e) {
-                    System.out.println("Erro de sistema. Não foi possível incluir a série");
+                    System.out.println("Erro de sistema. Não foi possível incluir a série\n");
                }
           }
      }
@@ -140,10 +140,10 @@ public class MenuSeries {
                     } while (op <= 0 || op > n-1);
                     mostraSerie(series[op-1]);
                } else {
-                    System.out.println("Nenhum livro encontrado.");
+                    System.out.println("Nenhuma série encontrada.");
                }
           } catch(Exception e) {
-               System.out.println("Erro do sustema. Não foi possuvel buscar as séries!");
+               System.out.println("Erro do sistema. Não foi possuvel buscar as séries!");
                e.printStackTrace();
           }
      }
@@ -169,7 +169,7 @@ public class MenuSeries {
                System.out.print("Nome da série (mínimo 3 caractéres): ");
                nome = scanner.nextLine();
                if(nome.isEmpty()) return;
-               if(nome.length() > 3) dadosCorretos = true;
+               if(nome.length() >= 3) dadosCorretos = true;
                else System.out.println("Nome inválido. O nome da série deve conter pelomenos 3 caractéres.");
           } while (!dadosCorretos);
 
@@ -201,7 +201,6 @@ public class MenuSeries {
                     String novoNome;
                     dadosCorretos = false;
                     do {
-                         System.out.println("Nome da seŕie atual da série: " + serie[op-1].getName());
                          System.out.print("\nNovo nome da série (deixe em branco para manter o anterior): ");
                          novoNome = scanner.nextLine();
                          if(!novoNome.isEmpty()) {
@@ -216,7 +215,6 @@ public class MenuSeries {
                     String novaData;
                     dadosCorretos = false;
                     do {
-                         System.out.println("Data de lançamento atual da série: " + serie[op-1].getLancamento());
                          System.out.print("\nNova data de lançamento da série (DD/MM/YYYY) (deixe em branco para manter o anterior): ");
                          novaData = scanner.nextLine();
                          if(!novaData.isEmpty()) {
@@ -245,7 +243,6 @@ public class MenuSeries {
                     String novoStreaming;
                     dadosCorretos = false;
                     do {
-                         System.out.println("Streaming atual da série: " + serie[op-1].getStreaming());
                          System.out.print("\nNovo streaming da série (deixe em branco para manter o anterior): ");
                          novoStreaming = scanner.nextLine();
                          if(!novoStreaming.isEmpty()) {
@@ -287,7 +284,7 @@ public class MenuSeries {
                System.out.print("Nome da série (mínimo 3 caractéres): ");
                nome = scanner.nextLine();
                if(nome.isEmpty()) return;
-               if(nome.length() > 3) dadosCorretos = true;
+               if(nome.length() >= 3) dadosCorretos = true;
                else System.out.println("Nome inválido. O nome da série deve conter pelomenos 3 caractéres.");
           } while (!dadosCorretos);
 
@@ -318,10 +315,9 @@ public class MenuSeries {
 
                     System.out.print("\nConfirma a exclusão da série? (S/N) ");
                     char resp = scanner.next().charAt(0);
-
+                    scanner.nextLine();
                     if(resp == 'S' || resp == 's') {
-                         // boolean excluido = arqSerie.delete(nome);
-                         boolean excluido =false;
+                         boolean excluido = arqSerie.delete(nome);
                          if(excluido) {
                               System.out.println("Série excluída com sucesso.");
                          } else {
