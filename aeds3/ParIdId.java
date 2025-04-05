@@ -1,4 +1,4 @@
-package aeds3; 
+package aeds3;
 
 /*
 Esta classe representa um objeto para uma entidade
@@ -76,6 +76,14 @@ public class ParIdId implements aeds3.RegistroArvoreBMais<ParIdId> {
     DataInputStream dis = new DataInputStream(bais);
     this.id1 = dis.readInt();
     this.id2 = dis.readInt();
+  }
+
+  public int getId1() {
+    return id1;
+  }
+
+  public int getId2() {
+    return id2;
   }
 
 }

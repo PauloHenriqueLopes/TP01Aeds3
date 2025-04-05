@@ -145,4 +145,7 @@ public class ParNomeId implements RegistroArvoreBMais<ParNomeId> {
     return pattern.matcher(nfdNormalizedString).replaceAll("").toLowerCase();
   }
 
+  public static int hash(String nome) {
+    return Math.abs(nome.hashCode());
+  }
 }

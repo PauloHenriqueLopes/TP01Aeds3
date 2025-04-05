@@ -6,14 +6,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.time.LocalDate;
 
-public class Serie {
+import aeds3.EntidadeArquivo;
+
+public class Serie implements EntidadeArquivo {
     private int id;
     private String name;
     private LocalDate lancamento;
     private String sinopse;
     private String streaming;
 
-    //Construtores
+    // Construtores
     public Serie() throws Exception {
         this(-1, "", LocalDate.now(), "", "");
     }
@@ -30,7 +32,7 @@ public class Serie {
         this.streaming = streaming;
     }
 
-    //sets
+    // sets
     public void setId(int id) {
         this.id = id;
     }
@@ -51,7 +53,7 @@ public class Serie {
         this.streaming = streaming;
     }
 
-    //geters
+    // geters
     public int getId() {
         return id;
     }
@@ -61,7 +63,7 @@ public class Serie {
     }
 
     public LocalDate getLancamento() {
-         return lancamento;
+        return lancamento;
     }
 
     public String getSinopse() {
@@ -77,10 +79,10 @@ public class Serie {
         DataOutputStream dos = new DataOutputStream(baos);
         dos.writeInt(id);
         dos.writeUTF(name);
-        dos.writeInt((int)lancamento.toEpochDay());
+        dos.writeInt((int) lancamento.toEpochDay());
         dos.writeUTF(sinopse);
-        dos.writeUTF(streaming); 
-        return baos.toByteArray(); 
+        dos.writeUTF(streaming);
+        return baos.toByteArray();
     }
 
     public void fromByteArray(byte[] byteArr) throws Exception {
@@ -92,4 +94,5 @@ public class Serie {
         sinopse = dis.readUTF();
         streaming = dis.readUTF();
     }
-}   
+
+}
