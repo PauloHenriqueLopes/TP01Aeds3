@@ -15,7 +15,6 @@ public class Principal {
                 System.out.println("> Início\n");
                 System.out.println("1) Séries");
                 System.out.println("2) Episódios");
-                System.out.println("3) Atores");
                 System.out.println("0) Sair");
 
                 System.out.print("\nOpção: ");
@@ -31,9 +30,6 @@ public class Principal {
                         break;
                     case 2:
                         (new MenuEpisodio()).menu();
-                        break;
-                    case 3:
-                        // Mostrar Atores
                         break;
                     case 0:
                         break;
