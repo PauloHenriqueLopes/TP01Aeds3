@@ -1,12 +1,14 @@
 # PUCFlix - Sistema de Gerenciamento de Séries e Episódios
 
-## O que o trabalho de vocês faz?
+## O que o trabalho faz?
 
-Nosso trabalho implementa um sistema completo para o gerenciamento de séries e seus episódios, simulando um serviço de streaming. O sistema permite:
+O trabalho implementa um sistema completo para o gerenciamento de séries e seus episódios, simulando um serviço de streaming. O sistema permite:
 
-- Cadastrar, buscar, alterar e excluir **séries**.
+- Cadastrar, buscar, alterar **séries** e excluir as que não possuem vinculo com nenhum episódio.
 - Cadastrar, buscar, alterar e excluir **episódios**, vinculados a séries.
 - Visualizar **episódios por temporada** de uma série.
+- Visualizar **todas as séries cadastradas**.
+- Visualizar **todos os episódios cadastrados** de uma série.
 - Garantir a integridade referencial entre séries e episódios, utilizando **ID de série como chave estrangeira** nos episódios.
 - Utilizar estruturas eficientes de **armazenamento e indexação** com:
   - CRUD genérico com arquivos.
@@ -17,7 +19,7 @@ O sistema é baseado no padrão **MVC** e foi escrito em **Java**.
 
 ---
 
-## Participantes
+## Participante
 
 - Paulo Henrique Lopes de Paula
 
@@ -26,11 +28,11 @@ O sistema é baseado no padrão **MVC** e foi escrito em **Java**.
 ## Estrutura de Classes
 
 ### `Serie.java` (entidades)
-- `getId()`, `getName()`, `getGenero()`, `getAno()`, `toByteArray()`, `fromByteArray()`
+- `Construtores, Metodos Geters e Setters`, `toByteArray()`, `fromByteArray()`
 
 ### `Episodio.java` (entidades)
 - Contém o `idSerie` como chave estrangeira
-- `getName()`, `getTemporada()`, `getDuracao()`, `getLancamento()`, `getSinopse()`, `toByteArray()`, `fromByteArray()`
+- `Contrutores, Metodos Geters e Setters`, `toByteArray()`, `fromByteArray()`
 
 ### `Arquivo<T>` (modelo)
 - Classe genérica de CRUD em arquivo.
@@ -57,12 +59,12 @@ O sistema é baseado no padrão **MVC** e foi escrito em **Java**.
 
 ## Experiência e Desenvolvimento
 
-O trabalho nos proporcionou uma experiência prática rica com estruturas de dados avançadas como Árvore B+ e Hash Extensível, além de aprofundar o uso de arquivos e programação genérica em Java.
+O trabalho proporcionou uma experiência prática rica com estruturas de dados avançadas como Árvore B+ e Hash Extensível, além de aprofundar o uso de arquivos e programação genérica em Java.
 
 - **Requisitos implementados**: Sim, todos os requisitos foram implementados.
 - **Maior desafio**: Integrar corretamente a Árvore B+ com o CRUD genérico e garantir que episódios estejam sempre associados a séries válidas.
 - **Resultado**: O projeto está funcionando como esperado. Conseguimos realizar todas as operações de forma eficiente, e o código está modular e bem estruturado.
-- **Aprendizado**: Reforçamos conceitos de chave primária e estrangeira, e a importância de consistência nos relacionamentos entre entidades.
+- **Aprendizado**: Reforçei conceitos de chave primária e estrangeira, e a importância de consistência nos relacionamentos entre entidades.
 
 ---
 
@@ -86,5 +88,5 @@ O trabalho nos proporcionou uma experiência prática rica com estruturas de dad
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/PUCFlix-AEDS3.git
-   cd PUCFlix-AEDS3
+   git clone https://github.com/PauloHenriqueLopes/TP01Aeds3.git
+   cd TP01Aeds3
