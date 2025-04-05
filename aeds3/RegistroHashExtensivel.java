@@ -10,14 +10,12 @@ v1.1 - 2021
 */
 package aeds3;
 
-public interface RegistroHashExtensivel {
+import java.io.IOException;
 
-  public int hashCode(); // chave numérica positiva para ser usada no diretório
-
-  public short size(); // tamanho FIXO do registro
-
-  public byte[] toByteArray() throws Exception; // representação do elemento em um vetor de bytes
-
-  public void fromByteArray(byte[] ba) throws Exception; // vetor de bytes a ser usado na construção do elemento
-
+public interface RegistroHashExtensivel<T> 
+{
+	public int hashCode(); // chave numérica para ser usada no diretório
+	public short size(); // tamanho FIXO do registro
+	public byte[] toByteArray() throws IOException; // representação do elemento em um vetor de bytes
+	public void fromByteArray(byte[] ba) throws IOException; // vetor de bytes a ser usado na construção do elemento
 }

@@ -4,27 +4,31 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.time.LocalDate;
 
-public class Episodio {
+import aeds3.EntidadeArquivo;
 
+public class Episodio implements EntidadeArquivo {
     private int id;
     private int serieId;
     private String name;
     private int temporada;
-    private String lancamento;
+    private LocalDate lancamento;
     private int duracao;
     private String sinopse;
 
-    //construtores
+    // construtores
     public Episodio() throws Exception {
-        this(-1, -1, "", -1, "", -1, "");
+        this(-1, -1, "", -1, null, -1, "");
     }
 
-    public Episodio(int serieId, String name, int temporada, String lancamento, int duracao, String sinopse) throws Exception {
-        this(-1, serieId, name, temporada,lancamento, duracao, sinopse);
+    public Episodio(int serieId, String name, int temporada, LocalDate lancamento, int duracao, String sinopse)
+            throws Exception {
+        this(-1, serieId, name, temporada, lancamento, duracao, sinopse);
     }
 
-    public Episodio(int id, int serieId, String name, int temporada, String lancamento, int duracao, String sinopse) throws Exception {
+    public Episodio(int id, int serieId, String name, int temporada, LocalDate lancamento, int duracao, String sinopse)
+            throws Exception {
         this.id = id;
         this.serieId = serieId;
         this.name = name;
@@ -34,7 +38,7 @@ public class Episodio {
         this.sinopse = sinopse;
     }
 
-    //gets
+    // gets
     public int getId() {
         return id;
     }
@@ -46,15 +50,15 @@ public class Episodio {
     public String getName() {
         return name;
     }
-    
+
     public int getTemporada() {
         return temporada;
     }
 
-    public String getLancamento() {
+    public LocalDate getLancamento() {
         return lancamento;
     }
-    
+
     public int getDuracao() {
         return duracao;
     }
@@ -63,7 +67,7 @@ public class Episodio {
         return sinopse;
     }
 
-    //seters
+    // seters
     public void setId(int id) {
         this.id = id;
     }
@@ -80,7 +84,7 @@ public class Episodio {
         this.temporada = temporada;
     }
 
-    public void setLancamento(String lancamento) {
+    public void setLancamento(LocalDate lancamento) {
         this.lancamento = lancamento;
     }
 
@@ -99,7 +103,7 @@ public class Episodio {
         dos.writeInt(serieId);
         dos.writeUTF(name);
         dos.writeInt(temporada);
-        dos.writeUTF(lancamento);
+        dos.writeInt((int) lancamento.toEpochDay());
         dos.writeInt(duracao);
         dos.writeUTF(sinopse);
         return baos.toByteArray();
@@ -112,7 +116,7 @@ public class Episodio {
         serieId = dis.readInt();
         name = dis.readUTF();
         temporada = dis.readInt();
-        lancamento = dis.readUTF();
+        lancamento = LocalDate.ofEpochDay(dis.readInt());
         duracao = dis.readInt();
         sinopse = dis.readUTF();
     }

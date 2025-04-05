@@ -1,4 +1,6 @@
 import java.util.Scanner;
+
+import visao.MenuEpisodio;
 import visao.MenuSeries;
 
 public class Principal {
@@ -7,31 +9,32 @@ public class Principal {
         try {
             scanner = new Scanner(System.in);
             int opition;
-            do{
+            do {
                 System.out.println("\n\nPUCFlix 1.0");
-                System.out.println( "-----------");
+                System.out.println("-----------");
                 System.out.println("> Início\n");
-                System.out.println( "1) Séries");
-                System.out.println( "2) Episódios");
-                System.out.println( "3) Atores");
-                System.out.println( "0) Sair");
+                System.out.println("1) Séries");
+                System.out.println("2) Episódios");
+                System.out.println("3) Atores");
+                System.out.println("0) Sair");
 
                 System.out.print("\nOpção: ");
-                try{
+                try {
                     opition = Integer.valueOf(scanner.nextLine());
-                } catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     opition = -1;
                 }
 
-                switch(opition) {
+                switch (opition) {
                     case 1:
                         (new MenuSeries()).menu();
                         break;
                     case 2:
-                        // (new MenuEpsodios()).menu();
+                        (new MenuEpisodio()).menu();
                         break;
                     case 3:
-                        //Mostrar Atores
+                        // Mostrar Atores
+                        break;
                     case 0:
                         break;
                     default:
@@ -39,8 +42,7 @@ public class Principal {
                         break;
                 }
             } while (opition != 0);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
