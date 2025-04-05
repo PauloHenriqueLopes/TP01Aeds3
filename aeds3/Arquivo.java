@@ -239,6 +239,16 @@ public class Arquivo<T extends EntidadeArquivo> {
         }
         return -1;
     }
+
+    public int ultimoID() {
+        try {
+            arquivo.seek(1);
+            return arquivo.readInt();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
     
 
 }

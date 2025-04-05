@@ -15,7 +15,7 @@ public class ArquivoEpisodio extends Arquivo<Episodio> {
     ArvoreBMais<ParIdId> indiceSerieEpisodio;
 
     public ArquivoEpisodio() throws Exception {
-        super("episodios", Episodio.class.getConstructor());
+        super("episodio", Episodio.class.getConstructor());
         File diretorio = new File("./dados/episodio");
         if (!diretorio.exists()) {
             diretorio.mkdirs();
@@ -65,6 +65,21 @@ public class ArquivoEpisodio extends Arquivo<Episodio> {
         return episodios;
     }
 
+    public Episodio[] readAll() throws Exception {
+        ArrayList<Episodio> episodios = new ArrayList<>();
+
+        int ultimoID = super.ultimoID();
+
+        for (int id = 1; id <= ultimoID; id++) {
+            Episodio e = super.read(id);
+            if (e != null) {
+                episodios.add(e);
+            }
+        }
+
+        return episodios.toArray(new Episodio[0]);
+    }
+
     @Override
     public boolean delete(int id) throws Exception {
         Episodio e = read(id);
@@ -98,5 +113,37 @@ public class ArquivoEpisodio extends Arquivo<Episodio> {
             }
         }
         return false;
+    }
+
+    public ArrayList<Episodio> readPorSerie(int id) throws Exception {
+        ArrayList<Episodio> lista = new ArrayList<>();
+    
+        // Lê todos os pares da árvore que correspondem à série
+        ArrayList<ParIdId> listaPares = indiceSerieEpisodio.read(new ParIdId(id, -1));
+    
+        for (ParIdId par : listaPares) {
+            Episodio ep = super.read(par.getId2());
+            if (ep != null) {
+                lista.add(ep);
+            }
+        }
+    
+        return lista;
+    }
+
+    public ArrayList<Episodio> readPorSerieETemporada(int id, int temporadaEscolhida) throws Exception {
+        ArrayList<Episodio> lista = new ArrayList<>();
+    
+        // Lê todos os pares da árvore que correspondem à série
+        ArrayList<ParIdId> listaPares = indiceSerieEpisodio.read(new ParIdId(id, -1));
+    
+        for (ParIdId par : listaPares) {
+            Episodio ep = super.read(par.getId2());
+            if (ep != null && ep.getTemporada() == temporadaEscolhida) {
+                lista.add(ep);
+            }
+        }
+    
+        return lista;
     }
 }

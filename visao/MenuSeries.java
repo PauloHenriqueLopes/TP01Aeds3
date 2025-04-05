@@ -5,11 +5,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import entidades.Episodio;
 import entidades.Serie;
+import modelo.ArquivoEpisodio;
 import modelo.ArquivoSerie;
 
 public class MenuSeries {
      ArquivoSerie arqSerie;
+     ArquivoEpisodio arqEpisodio;
      private static Scanner scanner = new Scanner(System.in);
      private static final String[] STREAMINGS = {
                "Netflix",
@@ -23,6 +26,7 @@ public class MenuSeries {
 
      public MenuSeries() throws Exception {
           arqSerie = new ArquivoSerie();
+          arqEpisodio = new ArquivoEpisodio();
      }
 
      public void menu() {
@@ -36,6 +40,7 @@ public class MenuSeries {
                System.out.println("3) Alterar");
                System.out.println("4) Excluir");
                System.out.println("5) Listar Séries");
+               System.out.println("6) Episódios por Temporada");
                System.out.println("0) Retornar");
 
                System.out.print("\nOpção: ");
@@ -60,6 +65,9 @@ public class MenuSeries {
                          break;
                     case 5:
                          listarSeries();
+                         break;
+                    case 6:
+                         listarEpisodioPorTemporada();
                          break;
                     case 0:
                          break;
@@ -115,7 +123,7 @@ public class MenuSeries {
           dadosCorretos = false;
           System.out.println("\nEscolha a plataforma de streaming:");
           for (int i = 0; i < STREAMINGS.length; i++) {
-               System.out.printf("%d) %s%n", i + 1, STREAMINGS[i]);
+               System.out.printf("[%d] %s%n", i + 1, STREAMINGS[i]);
           }
           int escolha = -1;
           do {
@@ -161,7 +169,7 @@ public class MenuSeries {
                if (series.length > 0) {
                     int n = 1;
                     for (Serie s : series) {
-                         System.out.println((n++) + ") " + s.getName());
+                         System.out.println("[" + (n++) + "] " + s.getName());
                     }
                     System.out.println("Escolha uma Série: ");
                     int op;
@@ -221,7 +229,7 @@ public class MenuSeries {
                          int n = 1;
 
                          for (Serie s : serie) {
-                              System.out.println((n++) + ") " + s.getName());
+                              System.out.println("[" + (n++) + "] " + s.getName());
                          }
 
                          System.out.println("Escolha uma Série: ");
@@ -289,7 +297,7 @@ public class MenuSeries {
                     // Alteração Streaming
                     System.out.println("\nEscolha o novo streaming (ou 0 para manter o atual):");
                     for (int i = 0; i < STREAMINGS.length; i++) {
-                         System.out.printf("%d) %s%n", i + 1, STREAMINGS[i]);
+                         System.out.printf("[%d] %s%n", i + 1, STREAMINGS[i]);
                     }
                     int escolha = -1;
                     do {
@@ -357,7 +365,7 @@ public class MenuSeries {
                          int n = 1;
 
                          for (Serie s : serie) {
-                              System.out.println((n++) + ") " + s.getName());
+                              System.out.println("[" + (n++) + "] " + s.getName());
                          }
 
                          System.out.println("Escolha uma Série: ");
@@ -373,7 +381,14 @@ public class MenuSeries {
                     } else if (serie.length == 1) {
                          op = 1;
                     }
+                    Serie serieSelecionada = serie[op - 1];
                     mostraSerie(serie[op - 1]);
+
+                    Episodio[] episodiosVinculados = arqEpisodio.readIdSerie(serieSelecionada.getId());
+                    if (episodiosVinculados != null && episodiosVinculados.length > 0) {
+                         System.out.println("Esta série possui episódios vinculados e não pode ser excluída.");
+                         return;
+                    }
 
                     System.out.print("\nConfirma a exclusão da série? (S/N) ");
                     char resp = scanner.next().charAt(0);
@@ -402,12 +417,12 @@ public class MenuSeries {
           try {
                ArrayList<Serie> series = arqSerie.readAll();
 
-               if(series.isEmpty()) {
+               if (series.isEmpty()) {
                     System.out.println("Nenhuma série foi encontrada!");
                     return;
                }
 
-               for(Serie serie : series) {
+               for (Serie serie : series) {
                     mostraSerie(serie);
                }
           } catch (Exception e) {
@@ -415,4 +430,92 @@ public class MenuSeries {
                e.printStackTrace();
           }
      }
+
+     private void listarEpisodioPorTemporada() {
+          System.out.println("\nListar Episódios por Temporada");
+      
+          try {
+              // 1. Listar todas as séries
+              ArrayList<Serie> series = arqSerie.readAll();
+      
+              if (series == null || series.size() == 0) {
+                  System.out.println("Nenhuma série cadastrada.");
+                  return;
+              }
+      
+              System.out.println("Séries disponíveis:");
+              for (int i = 0; i < series.size(); i++) {
+                  System.out.println("[" + (i + 1) + "] " + series.get(i).getName());
+              }
+      
+              // 2. Escolher uma série
+              int index = -1;
+              do {
+                  System.out.print("Escolha uma série pelo número: ");
+                  try {
+                      index = Integer.parseInt(scanner.nextLine()) - 1;
+                  } catch (NumberFormatException e) {
+                      index = -1;
+                  }
+              } while (index < 0 || index >= series.size());
+      
+              Serie serieEscolhida = series.get(index);
+      
+              // 3. Buscar episódios da série
+              ArquivoEpisodio arqEpisodio = new ArquivoEpisodio();
+              ArrayList<Episodio> episodiosDaSerie = arqEpisodio.readPorSerie(serieEscolhida.getId());
+      
+              if (episodiosDaSerie.isEmpty()) {
+                  System.out.println("Nenhum episódio cadastrado para esta série.");
+                  return;
+              }
+      
+              // 4. Descobrir maior número de temporada
+              int maiorTemporada = 0;
+              for (Episodio ep : episodiosDaSerie) {
+                  if (ep.getTemporada() > maiorTemporada) {
+                      maiorTemporada = ep.getTemporada();
+                  }
+              }
+      
+              // 5. Mostrar opções de temporada
+              System.out.println("\nTemporadas disponíveis:");
+              for (int i = 1; i <= maiorTemporada; i++) {
+                  System.out.println("[" + i + "] Temporada " + i);
+              }
+      
+              // 6. Escolher a temporada
+              int temporadaEscolhida = -1;
+              do {
+                  System.out.print("Escolha a temporada: ");
+                  try {
+                      temporadaEscolhida = Integer.parseInt(scanner.nextLine());
+                  } catch (NumberFormatException e) {
+                      temporadaEscolhida = -1;
+                  }
+              } while (temporadaEscolhida < 1 || temporadaEscolhida > maiorTemporada);
+      
+              // 7. Buscar episódios da temporada
+              ArrayList<Episodio> epsTemporada = arqEpisodio.readPorSerieETemporada(serieEscolhida.getId(), temporadaEscolhida);
+      
+              if (epsTemporada.isEmpty()) {
+                  System.out.println("Nenhum episódio cadastrado para a temporada " + temporadaEscolhida + ".");
+              } else {
+                  System.out.println("\nEpisódios da temporada " + temporadaEscolhida + ":\n");
+                  for (Episodio ep : epsTemporada) {
+                      System.out.printf("Nome.........: %s\n", ep.getName());
+                      System.out.printf("Temporada....: %d\n", ep.getTemporada());
+                      System.out.printf("Lançamento...: %s\n", ep.getLancamento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                      System.out.printf("Duração......: %d minutos\n", ep.getDuracao());
+                      System.out.printf("Sinopse......: %s\n", ep.getSinopse());
+                      System.out.println("----------------------");
+                  }
+              }
+      
+          } catch (Exception e) {
+              System.err.println("Erro ao listar episódios por temporada.");
+              e.printStackTrace();
+          }
+      }
+      
 }
