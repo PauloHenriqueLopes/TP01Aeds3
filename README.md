@@ -21,7 +21,7 @@ O sistema é baseado no padrão **MVC** e foi escrito em **Java**.
 
 ## Participante
 
-- Paulo Henrique Lopes de Paula
+- Paulo Henrique Lopes de Paula 
 
 ---
 
