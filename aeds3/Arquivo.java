@@ -214,23 +214,31 @@ public class Arquivo<T extends EntidadeArquivo> {
         byte lapide;
         int tamanho;
         long proximo;
+    
         while(endereco != -1) {
+            if (endereco + 11 > arquivo.length()) {
+                break;
+            }
+    
             arquivo.seek(endereco);
             lapide = arquivo.readByte();
             tamanho = arquivo.readShort();
             proximo = arquivo.readLong();
+    
             if(lapide == '*' && tamanho >= tamanhoNecessario) {
                 if(anterior == 5)
                     arquivo.seek(anterior);
                 else
                     arquivo.seek(anterior+3);
                 arquivo.writeLong(proximo);
-                break;
+                return endereco;
             }
+    
             anterior = endereco;
             endereco = proximo;
         }
-        return endereco;
+        return -1;
     }
+    
 
 }
